@@ -66,6 +66,7 @@ class App extends Component {
         break;
       case 1:
         console.log('STATUS 1');
+        this.state.socket.emit(SYNC_TIME, this.state.player.getCurrentTime());
         this.state.socket.emit(PLAY);
         break;
       case 2:
