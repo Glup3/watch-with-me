@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import YouTube from 'react-youtube';
-import { PLAY, PAUSE } from './Constants'
+import { PLAY, PAUSE, SEEK_OTHER, ASK_FOR_TIME, SYNC_TIME } from './Constants'
 
 var io = require('socket.io-client')
 
@@ -11,19 +11,10 @@ class App extends Component {
     player: null,
   }
 
-  componentWillMount() {
-    const socket = io('http://localhost:5000');
-
-    this.setState({
-      socket
-    })
-
-    this.initSocket(socket);
-  }
-
   initSocket = (socket) => {
     socket.on('connect', () => {
       console.log("Connected: ", socket.id);
+      socket.emit(ASK_FOR_TIME);
     });
 
     socket.on('disconnect', () => {
@@ -38,12 +29,29 @@ class App extends Component {
       this.state.player.pauseVideo();
     });
 
+    socket.on(ASK_FOR_TIME, () => {
+      socket.emit(SYNC_TIME, this.state.player.getCurrentTime());
+    });
+
+    socket.on(SYNC_TIME, (currentTime) => {
+      if (this.state.player.getCurrentTime() < currentTime - 0.2 || this.state.player.getCurrentTime() > currentTime + 0.2) {
+        this.state.player.seekTo(currentTime);
+        this.state.player.playVideo();
+      }
+    })
+
   }
 
   onReady = (e) => {
     this.setState({
-      player: e.target,
+      player: e.target
     })
+
+    // Socket
+    const socket = io('http://localhost:5000');
+    this.setState({socket})
+    this.initSocket(socket);
+    
     console.log("Youtube Player is ready");
   }
 
@@ -66,6 +74,7 @@ class App extends Component {
         break;
       case 3:
         console.log('STATUS 3');
+        this.state.socket.emit(SYNC_TIME, this.state.player.getCurrentTime());
         break;
       case 5:
         console.log('STATUS 5');
