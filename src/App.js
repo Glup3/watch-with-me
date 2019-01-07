@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import YouTube from 'react-youtube';
-import { PLAY, PAUSE, ASK_FOR_TIME, SYNC_TIME, NEW_VIDEO, ASK_FOR_VIDEO_INFORMATION, SYNC_VIDEO_INFORMATION } from './Constants'
+import { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO, ASK_FOR_VIDEO_INFORMATION, SYNC_VIDEO_INFORMATION } from './Constants'
 
 var io = require('socket.io-client')
 
@@ -39,10 +39,6 @@ class App extends Component {
 
     socket.on(PAUSE, () => {
       this.state.player.pauseVideo();
-    });
-
-    socket.on(ASK_FOR_TIME, () => {
-      socket.emit(SYNC_TIME, this.state.player.getCurrentTime());
     });
 
     socket.on(SYNC_TIME, (currentTime) => {
