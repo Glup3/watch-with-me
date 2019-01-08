@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Form, Button, FormGroup, Label, Input, Container, FormText } from 'reactstrap';
 
 export class NewRoomScreen extends Component {
 
@@ -20,14 +21,21 @@ export class NewRoomScreen extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Create or join room</h1>
-        <form onSubmit={this.handleSubmit}>
-          <input type="text" placeholder="roomname" id="room" onChange={this.handleChange} required />
-          <input type="text" placeholder="username" id="username" onChange={this.handleChange} required />
-          <button>Create/Join</button>
-        </form>
-      </div>
+      <Container>
+        <h1>Create or Join Room</h1>
+        <Form onSubmit={this.handleSubmit}>
+          <FormGroup>
+            <Label for="username">Username</Label>
+            <Input type="text" name="username" id="username" placeholder="Your Username" onChange={this.handleChange} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="room">Room</Label>
+            <Input type="text" name="room" id="room" placeholder="Room" onChange={this.handleChange}/>
+          </FormGroup>
+          <Button>Join Room</Button>
+          <FormText>Creates a new room if it doesn't exist yet.</FormText>
+        </Form>
+      </Container>
     )
   }
 }
