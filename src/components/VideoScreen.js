@@ -109,7 +109,7 @@ export class VideoScreen extends Component {
     })
 
     // Socket
-    const socket = io('http://localhost:5000');
+    const socket = io('https://watch-with-me-glup3.herokuapp.com' + process.env.PORT);
     this.setState({socket})
     this.initSocket(socket);
   }
