@@ -3,7 +3,6 @@ import YouTube from 'react-youtube';
 import { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO, ASK_FOR_VIDEO_INFORMATION, SYNC_VIDEO_INFORMATION, JOIN_ROOM } from '../Constants'
 
 var io = require('socket.io-client')
-const socketUrl = '/';
 
 const opts = {
   height: '390',
@@ -110,7 +109,7 @@ export class VideoScreen extends Component {
     })
 
     // Socket
-    const socket = io(socketUrl);
+    const socket = io('http://localhost:5000');
     this.setState({socket})
     this.initSocket(socket);
   }
