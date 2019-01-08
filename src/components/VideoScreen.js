@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import YouTube from 'react-youtube';
-import { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO, ASK_FOR_VIDEO_INFORMATION, SYNC_VIDEO_INFORMATION } from '../Constants'
+import { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO, ASK_FOR_VIDEO_INFORMATION, SYNC_VIDEO_INFORMATION, JOIN_ROOM } from '../Constants'
 
 var io = require('socket.io-client')
 
@@ -34,7 +34,7 @@ export class VideoScreen extends Component {
 
   initSocket = (socket) => {
     socket.on('connect', () => {
-      console.log("Connected ID: ", socket.id);
+      socket.emit(JOIN_ROOM, this.state.room);
       socket.emit(ASK_FOR_VIDEO_INFORMATION);
     });
 
@@ -112,37 +112,28 @@ export class VideoScreen extends Component {
     const socket = io('http://localhost:5000');
     this.setState({socket})
     this.initSocket(socket);
-    
-    console.log("Youtube Player is ready");
   }
 
   onStateChanged = (e) => {
     switch (this.state.player.getPlayerState()) {
       case -1:
-        console.log('STATUS -1');
         this.state.socket.emit(PLAY);
-        break; // NOT LOADED, DO NOTHING
+        break;
       case 0:
-        console.log('STATUS 0');
         break;
       case 1:
-        console.log('STATUS 1');
         this.state.socket.emit(SYNC_TIME, this.state.player.getCurrentTime());
         this.state.socket.emit(PLAY);
         break;
       case 2:
-        console.log('STATUS 2');
         this.state.socket.emit(PAUSE);
         break;
       case 3:
-        console.log('STATUS 3');
         this.state.socket.emit(SYNC_TIME, this.state.player.getCurrentTime());
         break;
       case 5:
-        console.log('STATUS 5');
         break;
       default:
-        console.log('NANI?!');
         break;
     }
   }

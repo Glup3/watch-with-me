@@ -23,8 +23,8 @@ export class NewRoomScreen extends Component {
       <div>
         <h1>Create or join room</h1>
         <form onSubmit={this.handleSubmit}>
-          <input type="text" placeholder="roomname" id="room" onChange={this.handleChange} />
-          <input type="text" placeholder="username" id="username" onChange={this.handleChange} />
+          <input type="text" placeholder="roomname" id="room" onChange={this.handleChange} required />
+          <input type="text" placeholder="username" id="username" onChange={this.handleChange} required />
           <button>Create/Join</button>
         </form>
       </div>
