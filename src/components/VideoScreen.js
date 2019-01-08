@@ -3,7 +3,7 @@ import YouTube from 'react-youtube';
 import { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO, ASK_FOR_VIDEO_INFORMATION, SYNC_VIDEO_INFORMATION, JOIN_ROOM } from '../Constants'
 
 var io = require('socket.io-client')
-const socketUrl = "/"
+const socketUrl = process.env.REACT_APP_SOCKET_URL || "/";
 
 const opts = {
   height: '390',

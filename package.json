@@ -28,6 +28,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "dotenv": "^6.2.0",
     "nodemon": "^1.18.9"
   }
 }
