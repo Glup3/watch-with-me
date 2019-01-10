@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Form, Button, FormGroup, Label, Input, Container, FormText } from 'reactstrap';
+import { Row, Input, Container } from 'react-materialize'
+import Button from 'react-materialize/lib/Button';
 
 export class NewRoomScreen extends Component {
 
@@ -22,19 +23,14 @@ export class NewRoomScreen extends Component {
   render() {
     return (
       <Container>
-        <h1>Create or Join Room</h1>
-        <Form onSubmit={this.handleSubmit}>
-          <FormGroup>
-            <Label for="username">Username</Label>
-            <Input type="text" name="username" id="username" placeholder="Your Username" onChange={this.handleChange} />
-          </FormGroup>
-          <FormGroup>
-            <Label for="room">Room</Label>
-            <Input type="text" name="room" id="room" placeholder="Room" onChange={this.handleChange}/>
-          </FormGroup>
-          <Button>Join Room</Button>
-          <FormText>Creates a new room if it doesn't exist yet.</FormText>
-        </Form>
+        <Row>
+          <h2>Create or join a room</h2>
+          <form onSubmit={this.handleSubmit}>
+            <Input label="Username" s={12} required onChange={this.handleChange} id="username"/>
+            <Input label="Room" s={12} required onChange={this.handleChange} id="room"/>
+            <Button>Submit</Button>
+          </form>
+        </Row>
       </Container>
     )
   }
