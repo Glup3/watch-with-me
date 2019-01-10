@@ -1,3 +1,11 @@
+:root {
+  --white: #ffffff;
+  --black: #000000;
+  --grey-darker: #212121;
+  --grey-dark: #303030;
+  --grey: #424242;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -6,9 +14,33 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--grey-darker);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+
+
+/* override materialize css */
+.input-field input[type=text]:focus + label, .materialize-textarea:focus:not([readonly]) + label {
+  color: var(--grey) !important;
+}
+
+.input-field input[type=text]:focus, .materialize-textarea:focus:not([readonly]) {
+  border-bottom: 1px solid var(--grey) !important;
+  box-shadow: 0 1px 0 0 var(--grey) !important;
+}
+
+.input-field input[type=text] + label, .materialize-textarea:focus:not([readonly]) + label {
+  color: var(--white) !important;
+}
+
+.input-field input[type=text], .materialize-textarea:focus:not([readonly]) {
+  border-bottom: 1px solid var(--white) !important;
+  box-shadow: 0 1px 0 0 var(--white) !important;
+}
+
+
