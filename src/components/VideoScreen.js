@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import YouTube from 'react-youtube';
 import { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO, ASK_FOR_VIDEO_INFORMATION, SYNC_VIDEO_INFORMATION, JOIN_ROOM } from '../Constants'
+import { Button, Input } from 'react-materialize';
+
 
 var io = require('socket.io-client')
 const socketUrl = process.env.REACT_APP_SOCKET_URL || "/";
@@ -154,18 +156,20 @@ export class VideoScreen extends Component {
   render() {
     return (
       <div>
-        <YouTube 
-          //videoId="rTs4ZpM3xWs"
-          videoId="RsGDjyWHBA0"
-          opts={opts}
-          onReady={this.onReady}
-          onStateChange={this.onStateChanged}
-          className="yt"
-        />
+        <div className="responsive-video">
+          <YouTube 
+            //videoId="rTs4ZpM3xWs"
+            videoId="RsGDjyWHBA0"
+            opts={opts}
+            onReady={this.onReady}
+            onStateChange={this.onStateChanged}
+            className="yt"
+          />
+        </div>
 
         <form onSubmit={this.handleSubmit}>
-            <input type="text" placeholder="URL eingeben" value={this.state.videoUrl} onChange={this.handleChange} />
-            <button type="submit">Load new Video</button>
+            <Input className="white-text" type="text" placeholder="URL eingeben" value={this.state.videoUrl} onChange={this.handleChange} />
+            <Button type="submit" className="black">Load new Video</Button>
         </form>
       </div>
     )
