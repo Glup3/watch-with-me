@@ -15,12 +15,16 @@ class SendMessageForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    this.props.sendMessage(this.state.message);
+    this.setState({
+      message: ''
+    });
   }
 
   render() {
     return (
-      <form>
-        <Input placeholder="Type your message" id="message" />
+      <form onSubmit={this.handleSubmit}>
+        <Input placeholder="Type your message" id="message" onChange={this.handleChange} value={this.state.message} />
       </form>
     )
   }

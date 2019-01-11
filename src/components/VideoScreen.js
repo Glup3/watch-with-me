@@ -26,7 +26,7 @@ export class VideoScreen extends Component {
     room: '',
     socket: null,
     player: null,
-    videoUrl: 'https://www.youtube.com/watch?v=RsGDjyWHBA0'
+    videoUrl: ''
   }
 
   componentDidMount() {
@@ -150,7 +150,7 @@ export class VideoScreen extends Component {
 
   handleChange = (e) => {
     this.setState({
-      videoUrl: e.target.value
+      [e.target.id]: e.target.value
     })
   }
 
@@ -169,11 +169,11 @@ export class VideoScreen extends Component {
         </div>
 
         <form onSubmit={this.handleSubmit}>
-            <Input className="white-text" type="text" placeholder="URL eingeben" value={this.state.videoUrl} onChange={this.handleChange} />
+            <Input className="white-text" type="text" placeholder="URL eingeben" id="videoUrl" value={this.state.videoUrl} onChange={this.handleChange} />
             <Button type="submit" className="black">Load new Video</Button>
         </form>
 
-        <ChatLayout socket={this.state.socket}/>
+        <ChatLayout username={this.props.username} room={this.props.room}/>
       </div>
     )
   }

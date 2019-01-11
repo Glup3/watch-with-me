@@ -5,7 +5,7 @@ const io = module.exports.io = require('socket.io')(server)
 
 const { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO,
    ASK_FOR_VIDEO_INFORMATION, SYNC_VIDEO_INFORMATION,
-   JOIN_ROOM } = require('../Constants');
+   JOIN_ROOM, SEND_MESSAGE, RECEIVED_MESSAGE } = require('../Constants');
 const PORT = process.env.PORT || 5000
 
 app.use(express.static(__dirname + '/../../build'))
@@ -43,7 +43,11 @@ io.on('connection', function(socket) {
 
   socket.on(SYNC_VIDEO_INFORMATION, (data) => {
     io.to(myRoom).emit(SYNC_VIDEO_INFORMATION, data);
-  })
+  });
+
+  socket.on(SEND_MESSAGE, (data) => {
+    io.in(myRoom).emit(RECEIVED_MESSAGE, data);
+  });
 
 });
 
