@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import { Row, Input, Button } from 'react-materialize'
+import React, { Component } from 'react';
+import { Row, Input, Button } from 'react-materialize';
 
-export class NewRoomScreen extends Component {
+class NewRoomScreen extends Component {
 
   state = {
     room: '',
@@ -11,7 +11,7 @@ export class NewRoomScreen extends Component {
   handleChange = (e) => {
     this.setState({
       [e.target.id] : e.target.value
-    })
+    });
   }
 
   handleSubmit = (e) => {

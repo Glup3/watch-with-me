@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import YouTube from 'react-youtube';
 import { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO, ASK_FOR_VIDEO_INFORMATION, SYNC_VIDEO_INFORMATION, JOIN_ROOM } from '../Constants'
 import { Button, Input } from 'react-materialize';
+import ChatLayout from './chat/ChatLayout';
 
 
 var io = require('socket.io-client')
@@ -171,6 +172,8 @@ export class VideoScreen extends Component {
             <Input className="white-text" type="text" placeholder="URL eingeben" value={this.state.videoUrl} onChange={this.handleChange} />
             <Button type="submit" className="black">Load new Video</Button>
         </form>
+
+        <ChatLayout socket={this.state.socket}/>
       </div>
     )
   }
