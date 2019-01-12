@@ -38,10 +38,13 @@ code {
 }
 
 .chat-container {
-  height: 500px;
+  height: 200px;
   overflow: auto;
 }
 
+.collapsible-header {
+  background-color: #000000;
+}
 
 /* override materialize css */
 .input-field input[type=text]:focus + label, .materialize-textarea:focus:not([readonly]) + label {
