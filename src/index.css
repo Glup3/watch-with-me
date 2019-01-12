@@ -37,6 +37,11 @@ code {
   height: 100%;
 }
 
+.chat-container {
+  height: 500px;
+  overflow: auto;
+}
+
 
 /* override materialize css */
 .input-field input[type=text]:focus + label, .materialize-textarea:focus:not([readonly]) + label {

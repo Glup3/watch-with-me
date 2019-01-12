@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import MessageList from './MessageList';
 import SendMessageForm from './SendMessageForm';
 import { SEND_MESSAGE, JOIN_ROOM, RECEIVED_MESSAGE } from '../../Constants';
+import { Col } from 'react-materialize';
+import Row from 'react-materialize/lib/Row';
 
 const io = require('socket.io-client')
 const socketUrl = process.env.REACT_APP_SOCKET_URL || "/";
@@ -19,9 +21,7 @@ export class ChatLayout extends Component {
 
   componentDidMount() {
     const socket = io(socketUrl);
-      this.setState({
-        socket: socket
-      })
+    this.setState({socket});
     this.initSocket(socket);
   }
 
@@ -50,10 +50,12 @@ export class ChatLayout extends Component {
 
   render() {
     return (
-      <div>
-        <MessageList messages={this.state.messages}/>
-        <SendMessageForm sendMessage={this.sendMassage}/>
-      </div>
+      <Row>
+        <Col s={12}>
+          <MessageList messages={this.state.messages}/>
+        </Col>
+          <SendMessageForm className="myInput" sendMessage={this.sendMassage}/> 
+      </Row>
     )
   }
 }

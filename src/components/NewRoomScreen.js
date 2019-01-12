@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Input, Button } from 'react-materialize';
+import { Row, Input, Button, Col } from 'react-materialize';
 
 class NewRoomScreen extends Component {
 
@@ -24,9 +24,11 @@ class NewRoomScreen extends Component {
       <Row>
         <h2 className="white-text">Create or join a room</h2>
         <form onSubmit={this.handleSubmit}>
-          <Input className="white-text" placeholder="" label="Your username" s={12} required onChange={this.handleChange} id="username"/>
-          <Input className="white-text" placeholder="" label="Room ID" s={12} required onChange={this.handleChange} id="room"/>
-          <Button className="black">Submit</Button>
+          <Input className="white-text" placeholder="" s={12} label="Your username" required onChange={this.handleChange} id="username"/>
+          <Input className="white-text" placeholder="" s={12} label="Room ID" required onChange={this.handleChange} id="room"/>
+          <Col>
+            <Button className="black">Submit</Button>
+          </Col>
         </form>
       </Row>
     )

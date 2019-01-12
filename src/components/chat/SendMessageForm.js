@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Input from 'react-materialize/lib/Input';
+import { Input } from 'react-materialize'
 
 class SendMessageForm extends Component {
 
@@ -24,7 +24,7 @@ class SendMessageForm extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <Input placeholder="Type your message" id="message" onChange={this.handleChange} value={this.state.message} />
+        <Input s={12} className="white-text" placeholder="Type your message" id="message" onChange={this.handleChange} value={this.state.message} />
       </form>
     )
   }

@@ -3,6 +3,8 @@ import YouTube from 'react-youtube';
 import { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO, ASK_FOR_VIDEO_INFORMATION, SYNC_VIDEO_INFORMATION, JOIN_ROOM } from '../Constants'
 import { Button, Input } from 'react-materialize';
 import ChatLayout from './chat/ChatLayout';
+import Row from 'react-materialize/lib/Row';
+import Col from 'react-materialize/lib/Col';
 
 
 var io = require('socket.io-client')
@@ -44,6 +46,7 @@ export class VideoScreen extends Component {
 
     socket.on('disconnect', () => {
       console.log("Disconnected")
+      socket.emit("bye");
     });
 
     socket.on(PLAY, () => {
@@ -157,23 +160,34 @@ export class VideoScreen extends Component {
   render() {
     return (
       <div>
-        <div className="responsive-video">
-          <YouTube 
-            //videoId="rTs4ZpM3xWs"
-            videoId="RsGDjyWHBA0"
-            opts={opts}
-            onReady={this.onReady}
-            onStateChange={this.onStateChanged}
-            className="yt"
-          />
-        </div>
-
-        <form onSubmit={this.handleSubmit}>
+        <Row>
+          <Col s={12} xl={9}>
+            <div className="responsive-video">
+              <YouTube 
+                //videoId="rTs4ZpM3xWs"
+                videoId="RsGDjyWHBA0"
+                opts={opts}
+                onReady={this.onReady}
+                onStateChange={this.onStateChanged}
+                className="yt"
+              />
+            </div>
+          </Col>
+          <Col s={12} xl={3}>
+            <ChatLayout username={this.props.username} room={this.props.room}/>
+          </Col>
+        </Row>
+        
+        <Row>
+          <form onSubmit={this.handleSubmit}>
             <Input className="white-text" type="text" placeholder="URL eingeben" id="videoUrl" value={this.state.videoUrl} onChange={this.handleChange} />
             <Button type="submit" className="black">Load new Video</Button>
-        </form>
+          </form>
+        </Row>
 
-        <ChatLayout username={this.props.username} room={this.props.room}/>
+        
+
+        
       </div>
     )
   }
