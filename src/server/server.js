@@ -15,10 +15,12 @@ io.on('connection', function(socket) {
   //in = send all
   //to = send all except sender
   var myRoom = '';
+  var myUsername = '';
 
-  socket.on(JOIN_ROOM, (room) => {
-    socket.join(room);
-    myRoom = room;
+  socket.on(JOIN_ROOM, (data) => {
+    socket.join(data.room);
+    myRoom = data.room;
+    myUsername = data.username
   });
   
   socket.on(PLAY, () => {
@@ -47,6 +49,14 @@ io.on('connection', function(socket) {
 
   socket.on(SEND_MESSAGE, (data) => {
     io.in(myRoom).emit(RECEIVED_MESSAGE, data);
+  });
+
+  socket.on('disconnect', () => {
+    const message = myUsername + " disconnected.";
+    io.in(myRoom).emit(RECEIVED_MESSAGE, {
+      username: myUsername,
+      text: message
+    });
   });
 
 });

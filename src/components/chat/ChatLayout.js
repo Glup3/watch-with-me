@@ -33,7 +33,10 @@ export class ChatLayout extends Component {
 
   initSocket = (socket) => {
     socket.on('connect', () => {
-      socket.emit(JOIN_ROOM, this.props.room);
+      socket.emit(JOIN_ROOM, {
+        room: this.props.room,
+        username: this.props.username,
+      });
 
       const message = this.props.username + " joined the room.";
       socket.emit(SEND_MESSAGE, {

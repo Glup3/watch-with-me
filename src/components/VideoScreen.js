@@ -40,7 +40,10 @@ export class VideoScreen extends Component {
 
   initSocket = (socket) => {
     socket.on('connect', () => {
-      socket.emit(JOIN_ROOM, this.state.room);
+      socket.emit(JOIN_ROOM, {
+        room: this.state.username,
+        username: this.state.username,
+      });
       socket.emit(ASK_FOR_VIDEO_INFORMATION);
     });
 
