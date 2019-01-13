@@ -202,8 +202,10 @@ export class VideoScreen extends Component {
         
         <Row>
           <form onSubmit={this.handleSubmit}>
-            <Input className="white-text" type="text" placeholder="URL eingeben" id="videoUrl" value={this.state.videoUrl} onChange={this.handleChange} />
-            <Button type="submit" className="black">Load new Video</Button>
+            <Input s={12} className="white-text" type="text" placeholder="Insert Youtube link" id="videoUrl" value={this.state.videoUrl} onChange={this.handleChange} />
+            <Col>
+              <Button s={12} type="submit" className="black">Load new Video</Button>
+            </Col>
           </form>
         </Row>
       </div>
