@@ -139,7 +139,7 @@ export class VideoScreen extends Component {
         this.state.socket.emit(PAUSE);
         break;
       case 3:
-        this.state.socket.emit(SYNC_TIME, this.state.player.getCurrentTime());
+        this.state.player.playVideo();
         break;
       case 5:
         break;
