@@ -1,14 +1,14 @@
-const express = require('express')
-const app = express()
-const server = require('http').Server(app)
-const io = module.exports.io = require('socket.io')(server)
+const express = require('express');
+const app = express();
+const server = require('http').Server(app);
+const io = module.exports.io = require('socket.io')(server);
 
 const { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO,
    ASK_FOR_VIDEO_INFORMATION, SYNC_VIDEO_INFORMATION,
    JOIN_ROOM, SEND_MESSAGE, RECEIVED_MESSAGE } = require('../Constants');
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000;
 
-app.use(express.static(__dirname + '/../../build'))
+app.use(express.static(__dirname + '/../../build'));
 
 io.on('connection', function(socket) {
 
@@ -20,7 +20,13 @@ io.on('connection', function(socket) {
   socket.on(JOIN_ROOM, (data) => {
     socket.join(data.room);
     myRoom = data.room;
-    myUsername = data.username
+    myUsername = data.username;
+
+    const message = myUsername + " joined the room.";
+    io.in(myRoom).emit(RECEIVED_MESSAGE, {
+      username: 'Server Notification',
+      text: message
+    });
   });
   
   socket.on(PLAY, () => {
@@ -29,7 +35,7 @@ io.on('connection', function(socket) {
 
   socket.on(PAUSE, () => {
     socket.to(myRoom).emit(PAUSE);    
-  })
+  });
 
   socket.on(SYNC_TIME, (currentTime) => {
     socket.to(myRoom).emit(SYNC_TIME, currentTime);
@@ -53,8 +59,8 @@ io.on('connection', function(socket) {
 
   socket.on('disconnect', () => {
     const message = myUsername + " disconnected.";
-    io.in(myRoom).emit(RECEIVED_MESSAGE, {
-      username: myUsername,
+    socket.in(myRoom).emit(RECEIVED_MESSAGE, {
+      username: 'Server Notification',
       text: message
     });
   });

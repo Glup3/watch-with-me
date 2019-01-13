@@ -1,13 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import YouTube from 'react-youtube';
-import { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO, ASK_FOR_VIDEO_INFORMATION, SYNC_VIDEO_INFORMATION, JOIN_ROOM } from '../Constants'
+import { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO, ASK_FOR_VIDEO_INFORMATION, SYNC_VIDEO_INFORMATION, JOIN_ROOM, RECEIVED_MESSAGE } from '../Constants'
 import { Button, Input } from 'react-materialize';
 import ChatLayout from './chat/ChatLayout';
 import Row from 'react-materialize/lib/Row';
 import Col from 'react-materialize/lib/Col';
 
-
-var io = require('socket.io-client')
+var io = require('socket.io-client');
 const socketUrl = process.env.REACT_APP_SOCKET_URL || "/";
 
 const opts = {
@@ -28,28 +27,38 @@ export class VideoScreen extends Component {
     room: '',
     socket: null,
     player: null,
-    videoUrl: ''
+    videoUrl: '',
+    messages: [
+      {username: 'user1', text:'Hi'},
+      {username: 'user2', text:'Servas'},
+      {username: 'user1', text:'Wie gehts wie stehts?'},
+    ],
+    users: [
+      {username: 'ich'},
+      {username: 'du'},
+      {username: 'er'},
+      {username: 'max'},
+    ]
   }
 
   componentDidMount() {
     this.setState({
       username: this.props.username,
       room: this.props.room
-    })
+    });
   }
 
-  initSocket = (socket) => {
+  onSocketMethods = (socket) => {
     socket.on('connect', () => {
       socket.emit(JOIN_ROOM, {
-        room: this.state.username,
+        room: this.state.room,
         username: this.state.username,
       });
       socket.emit(ASK_FOR_VIDEO_INFORMATION);
     });
 
     socket.on('disconnect', () => {
-      console.log("Disconnected")
-      socket.emit("bye");
+      console.log("Disconnected");
     });
 
     socket.on(PLAY, () => {
@@ -67,11 +76,11 @@ export class VideoScreen extends Component {
     socket.on(NEW_VIDEO, (videoUrl) => {
       this.state.player.loadVideoById({
         videoId: this.getYoutubeIdByUrl(videoUrl)
-      })
+      });
       this.setState({
         videoUrl: ''
-      })
-    })
+      });
+    });
 
     socket.on(ASK_FOR_VIDEO_INFORMATION, () => {
       const data = {
@@ -86,8 +95,17 @@ export class VideoScreen extends Component {
       this.state.player.loadVideoById({
         videoId: videoId,
         startSeconds: data.currentTime
-      })
-    })
+      });
+    });
+
+    socket.on(RECEIVED_MESSAGE, (data) => {
+      this.setState({
+        messages: [...this.state.messages, {
+          username: data.username,
+          text: data.text
+        }]
+      });
+    });
 
   }
 
@@ -116,12 +134,12 @@ export class VideoScreen extends Component {
   onReady = (e) => {
     this.setState({
       player: e.target
-    })
+    });
 
     // Socket
     const socket = io(socketUrl);
-    this.setState({socket})
-    this.initSocket(socket);
+    this.setState({socket});
+    this.onSocketMethods(socket);
   }
 
   onStateChanged = (e) => {
@@ -157,7 +175,7 @@ export class VideoScreen extends Component {
   handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value
-    })
+    });
   }
 
   render() {
@@ -177,7 +195,12 @@ export class VideoScreen extends Component {
             </div>
           </Col>
           <Col s={12} xl={3}>
-            <ChatLayout username={this.props.username} room={this.props.room}/>
+            <ChatLayout 
+              username={this.props.username} 
+              room={this.props.room} 
+              messages={this.state.messages}
+              users={this.state.users}
+              socket={this.state.socket} />
           </Col>
         </Row>
         
@@ -187,10 +210,6 @@ export class VideoScreen extends Component {
             <Button type="submit" className="black">Load new Video</Button>
           </form>
         </Row>
-
-        
-
-        
       </div>
     )
   }
