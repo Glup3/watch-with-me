@@ -46,6 +46,17 @@ code {
   background-color: #000000;
 }
 
+.message-container {
+  margin-top: 3px;
+  margin-right: 10px;
+  padding-left: 5px;
+  border: 1px white solid;
+}
+
+.message-container span {
+  display: block;
+}
+
 /* override materialize css */
 .input-field input[type=text]:focus + label, .materialize-textarea:focus:not([readonly]) + label {
   color: var(--grey) !important;

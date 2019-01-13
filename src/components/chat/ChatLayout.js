@@ -20,9 +20,10 @@ export class ChatLayout extends Component {
         <CollapsibleItem header={"Online Users: " + this.props.users.length} icon="contacts" className="white-text">
           <UserList users={this.props.users}/>
         </CollapsibleItem>
-        <CollapsibleItem header="Open Chat" icon="chat_bubble" className="white-text">
+        <CollapsibleItem header="Chat" icon="chat_bubble" className="white-text">
           <div>Your username: {this.props.username}</div>
           <div>Your room: {this.props.room}</div>
+          <p></p>
           <Row>
             <Col s={12}>
               <MessageList messages={this.props.messages}/>

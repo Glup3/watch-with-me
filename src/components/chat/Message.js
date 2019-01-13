@@ -2,9 +2,9 @@ import React from 'react';
 
 const Message = ({ username, text }) => {
   return (
-    <div>
-      <div className="blue-text">{ username }</div>
-      <div className="white-text">{ text }</div>
+    <div className="message-container">
+      <span className="blue-text">{ username }</span>
+      <span className="white-text">{ text }</span>
     </div>
   );
 }
