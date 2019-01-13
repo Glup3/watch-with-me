@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import YouTube from 'react-youtube';
-import { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO, ASK_FOR_VIDEO_INFORMATION, SYNC_VIDEO_INFORMATION, JOIN_ROOM, RECEIVED_MESSAGE } from '../Constants'
+import { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO, ASK_FOR_VIDEO_INFORMATION,
+   SYNC_VIDEO_INFORMATION, JOIN_ROOM, RECEIVED_MESSAGE,
+   ASK_FOR_USERNAME, SEND_USERNAME } from '../Constants'
 import { Button, Input } from 'react-materialize';
 import ChatLayout from './chat/ChatLayout';
 import Row from 'react-materialize/lib/Row';
@@ -23,36 +25,18 @@ const opts = {
 export class VideoScreen extends Component {
 
   state = {
-    username: '',
-    room: '',
     socket: null,
     player: null,
     videoUrl: '',
-    messages: [
-      {username: 'user1', text:'Hi'},
-      {username: 'user2', text:'Servas'},
-      {username: 'user1', text:'Wie gehts wie stehts?'},
-    ],
-    users: [
-      {username: 'ich'},
-      {username: 'du'},
-      {username: 'er'},
-      {username: 'max'},
-    ]
-  }
-
-  componentDidMount() {
-    this.setState({
-      username: this.props.username,
-      room: this.props.room
-    });
+    messages: [],
+    users: []
   }
 
   onSocketMethods = (socket) => {
     socket.on('connect', () => {
       socket.emit(JOIN_ROOM, {
-        room: this.state.room,
-        username: this.state.username,
+        room: this.props.room,
+        username: this.props.username,
       });
       socket.emit(ASK_FOR_VIDEO_INFORMATION);
     });
@@ -107,10 +91,22 @@ export class VideoScreen extends Component {
       });
     });
 
+    socket.on(ASK_FOR_USERNAME, () => {
+      this.setState({users: []})
+      this.state.socket.emit(SEND_USERNAME, this.props.username);
+    });
+
+    socket.on(SEND_USERNAME, (username) => {
+
+      this.setState({
+        users: [...this.state.users, username]
+      });
+    });
+
   }
 
   syncTime = (currentTime) => {
-    if (this.state.player.getCurrentTime() < currentTime - 0.2 || this.state.player.getCurrentTime() > currentTime + 0.2) {
+    if (this.state.player.getCurrentTime() < currentTime - 0.5 || this.state.player.getCurrentTime() > currentTime + 0.5) {
       this.state.player.seekTo(currentTime);
       this.state.player.playVideo();
     }
@@ -157,7 +153,7 @@ export class VideoScreen extends Component {
         this.state.socket.emit(PAUSE);
         break;
       case 3:
-        this.state.player.playVideo();
+        this.state.socket.emit(SYNC_TIME, this.state.player.getCurrentTime());
         break;
       case 5:
         break;
