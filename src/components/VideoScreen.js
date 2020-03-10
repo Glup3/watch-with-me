@@ -9,7 +9,7 @@ import Row from 'react-materialize/lib/Row';
 import Col from 'react-materialize/lib/Col';
 
 var io = require('socket.io-client');
-const socketUrl = process.env.REACT_APP_SOCKET_URL || "/";
+const socketUrl = "/";
 
 const opts = {
   height: '390',
