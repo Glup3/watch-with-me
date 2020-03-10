@@ -16,6 +16,7 @@
     "start": "node src/server/server.js",
     "dev": "concurrently \"nodemon ./src/server/server.js\" \"react-scripts start\"",
     "build": "react-scripts build",
+    "heroku-build": "npm install && npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
