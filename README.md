@@ -15,3 +15,12 @@ Phuc Tran <glup3.tran@gmail.com>
 - socket.io (websocket)
 - React Materialize
 - React
+
+## How to deploy
+
+Note: dont ignore `build` folder in `.gitignore`
+
+- ```git checkout heroku-deployment```
+- ```git merge master```
+- ```npm run heroku-build```
+- ```git push heroku master```
