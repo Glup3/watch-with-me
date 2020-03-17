@@ -1,7 +1,9 @@
 const express = require('express');
+const { Client } = require('pg');
 const app = express();
 const server = require('http').Server(app);
 const io = module.exports.io = require('socket.io')(server);
+require('dotenv').config();
 
 const { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO,
    ASK_FOR_VIDEO_INFORMATION, SYNC_VIDEO_INFORMATION,
@@ -9,6 +11,11 @@ const { PLAY, PAUSE, SYNC_TIME, NEW_VIDEO,
 const PORT = process.env.PORT || 5000;
 
 app.use(express.static(__dirname + '/../../build'));
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+})
 
 io.on('connection', function(socket) {
 
@@ -62,14 +69,21 @@ io.on('connection', function(socket) {
   });
 
   socket.on('disconnect', () => {
-    const message = socket.username + " disconnected.";
-    socket.in(socket.room).emit(RECEIVED_MESSAGE, {
-      username: 'Server Notification',
-      text: message
+    client.connect();
+
+    client.query('SELECT table_name FROM information_schema.tables;', (err, res) => {
+      if (err) throw err;
+
+      const message = socket.username + " disconnected. - Tables:" + res.rows.length;
+      socket.in(socket.room).emit(RECEIVED_MESSAGE, {
+        username: 'Server Notification',
+        text: message
+      });
+
+      io.in(socket.room).emit(ASK_FOR_USERNAME);
+
+      client.end();
     });
-
-    io.in(socket.room).emit(ASK_FOR_USERNAME);
-
   });
 
 });
